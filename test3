@@ -1,0 +1,8 @@
+A={-3.141,3.141,1.57,0,1,2};
+print A;
+function f=x*sin(x)+cos(x)-x*x;
+print f;
+print f(A);
+A=f(f(f(A)));
+print A;
+power_set {1,2};

@@ -1,0 +1,234 @@
+%{
+    #include<iostream>
+    #include<cstdlib>
+    #include<string>
+    #include<map>
+    #include "Set.hpp"
+    #include "function.hpp"
+    using namespace std;
+    
+    void yyerror(string s)
+    {
+        cerr<<s<<endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    Set univerzalni;
+    extern int yylex();
+    map<string,Set> skupovi;
+    map<string, Function*> funkcije;
+%}
+
+%union{
+    string* s;
+    bool b;
+    double d;
+    Set* skup;
+    Function* fun;
+}
+
+%left razlika_token
+%left unija_token
+%left presek_token
+%nonassoc '<'
+%nonassoc '~'
+
+%left '-' '+'
+%left '*'
+%nonassoc UNARMINUS
+
+
+
+%token print_token unija_token presek_token razlika_token inkluzija_token
+%token card_token universal_token partitive_token  check_token to__token
+%token x_token sin_token cos_token  function_token
+%token<d> num_token
+%token<s> id_token idfun_token
+%type<fun> F
+%type<skup> E NizBrojeva
+%type<b> CE
+
+
+%%
+Program: Program  Naredba '\n'
+    | Naredba '\n'
+    ;
+Naredba: id_token '=' E ';'{
+                                if((skupovi.find(*$1))==skupovi.end())
+                                    cout<<"\tthe set variable "<<*$1<<" is declared"<<"\n";
+                                else 
+                                    {
+                                        cout<<"\tredefinition of the set variable "<<*$1<<"\n";
+                                    }
+                                    
+                                skupovi[*$1]=*$3;
+                                delete $3;
+                                
+                            }
+    | function_token idfun_token '='  F  ';' {
+                                
+                                 if((funkcije.find(*$2))==funkcije.end())
+                                    cout<<"\tthe function variable "<<*$2<<" is declared"<<"\n";
+                                else 
+                                    {
+                                        cout<<"\t redefinition of the function variable "<<*$2<<"\n";
+                                    }
+                                    
+                                funkcije[*$2]=$4;
+                            
+                            
+                            }
+    | print_token F ';'  {cout<<"\t"<<*$2<<endl;}
+    | print_token E ';'  {cout<<"\t"<<*$2<<endl; delete $2;}
+    | print_token idfun_token '(' num_token ')' ';' {
+                            
+                                 if((funkcije.find(*$2))==funkcije.end())
+                                {
+                                     yyerror("function variable is not defined");
+                                }
+                            
+                                cout<<"\t"<<funkcije[*$2]->vrednost($4)<<endl;
+                            
+                            
+                            }
+    | check_token CE ';'  {
+                            if($2==true) cout<<"\t"<<"true"<<endl;
+                            else cout<<"\t"<<"false"<<endl;
+                        
+                        }
+    | card_token E ';'  {cout<<"\t"<<$2->card()<<endl; delete $2;}
+    | universal_token '=' E ';'  {
+                                    univerzalni=*$3;
+                                    cout<<"\t"<<"a new universal set is defined\n";
+                                    delete $3;
+                                }
+    | partitive_token E ';'  {
+                                set<Set>rez=$2->partitivni();
+                                cout<<"\t{ ";
+                                unsigned brojac=1;
+                                set<Set>::iterator it=rez.begin();
+                                for(;it!=rez.end();it++)
+                                {
+                                    if(brojac!=rez.size())
+                                        cout<<*it<<", ";
+                                    else
+                                        cout<<*it;
+                                    brojac++;
+                                }
+                                
+                               cout<<" }\n";
+                               delete $2;
+                            }
+    ;
+
+E: num_token to__token num_token
+                        {
+                            $$=new Set();
+                            $$->insert($1);
+                            for(int x=$1;x<=$3;x++)
+                            {
+                                $$->insert(x);
+                            }
+        
+                        }
+    | '{' NizBrojeva '}' {$$=$2;}
+    | E unija_token E 
+                        {
+                            $$=new Set((*$1)+(*$3));
+                            delete $1;
+                            delete $3;
+                        }
+    | E presek_token E 
+                        {
+                            $$=new Set((*$1)*(*$3));
+                            delete $1;
+                            delete $3;
+                        }
+    | E razlika_token E
+                        {
+                            $$=new Set((*$1)-(*$3));
+                            delete $1;
+                            delete $3;
+                        }
+    | '~' E
+                        {
+                            //Ako univerzalni skup nije lepo def:
+                            if(univerzalni.size()==0)
+                            {
+                                yyerror("the universal set is not defined");
+                            }
+                            
+                            $$=new Set(univerzalni-(*$2));
+                            delete $2;
+                            
+                        }
+    | idfun_token '(' E ')'
+                        {
+                            if((funkcije.find(*$1))==funkcije.end())
+                                {
+                                   cerr<<"the function variable "<<*$1<<" is not defined";
+                                    yyerror(""); 
+                                }
+                            Set rez;
+                            set<double>::iterator it=$3->begin();
+                            for(;it!=$3->end();it++)
+                            {
+                                rez.insert(funkcije[*$1]->vrednost(*it));
+                            }
+                            $$=new Set(rez);
+                            delete $3;
+                        }
+                
+    | '(' E ')' {$$=$2;}
+    | id_token {
+                                if((skupovi.find(*$1))==skupovi.end())
+                                { 
+                                   cerr<<"the set variable "<<*$1<<" is not defined";
+                                    yyerror("");
+                                }
+                                $$=new Set(skupovi[*$1]);
+                }
+    ;
+NizBrojeva: num_token ',' NizBrojeva {$$=$3; $$->insert($1);}
+    | num_token {$$=new Set(); $$->insert($1);}
+    | '-' num_token {$$=new Set(); $$->insert((-1)*$2);}
+    | '-' num_token ',' NizBrojeva {$$=$4; $$->insert((-1)*$2);}
+    ;
+CE: num_token ':' E {
+                        if(($3->find($1))==$3->end())
+                            $$=false;
+                        else 
+                            $$=true;
+                            delete $3;
+    }
+    | E '<' E { $$= (*$1)<(*$3); delete $1; delete $3;}
+    ;
+F: x_token {$$=new IdFun();}
+    | sin_token '(' F ')' {$$=new Sin($3);}
+    | cos_token '(' F ')' {$$=new Cos($3);}
+    | F '+' F {$$=new Plus($1,$3);}
+    | F '-' F {$$=new Minus($1,$3);}
+    | F '*' F {$$=new Puta($1,$3);}
+    | '(' F ')' {$$=$2;}
+    | num_token {$$=new Const($1);}
+    | idfun_token {
+            if((funkcije.find(*$1))==funkcije.end())
+            {
+                 cerr<<"the function variable "<<*$1<<" is not defined";
+                 yyerror("");
+            }
+            else
+            $$=funkcije[*$1];
+        }
+    | '-' %prec UNARMINUS F {
+        $$=new Puta(new Const(-1),$2);
+    
+    }
+    ;
+
+%%
+int main()
+{
+    yyparse();
+    return 0;
+}
