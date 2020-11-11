@@ -1,4 +1,4 @@
-# This program is a interpreter for functions of real variable and sets
+# interpreter for functions of real variable and sets
 ## Syntax:
 
  Use**test1, test2 or test3** as a example how it works. 
@@ -13,6 +13,7 @@
  Before using of complement opperation we need to define universal set (~A := UniversalSet\A).
  
  **Function rules:**
+ 
   As an example we can define function  with name f as function f=sin(x)*cos(x);
   
   When function is defined we can write it on output with print command : print f;
@@ -20,10 +21,16 @@
   When declaring a function we can use constans(real numbers), symbol x, sin symbol, cos symbol, and symbols like +,-,*,(,).
   
   
-  We can change the value of the declared variable with command like: variableName= newValue;
+  We can change the value of the declared variable with command like: setName= newValue;  or function functionName= newWalue;
   
   Each command is need to be terminated with symbol ;.
   
+  
+  **Guide:**
+  
+  After downloading files you need to type makefile in terminal and execute ./interpreter.
+  
+  Also, you can execute with: ./interpreter<test1/2/3.
   
  
  
