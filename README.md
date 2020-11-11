@@ -2,7 +2,9 @@
 ## Syntax:
 
  Use**test1, test2 or test3** as a example how it works. 
+ 
  **Set rules:**   
+ 
  As an example we can define set with name A and elements 1,2 and 3 with: A={1,2,3};
  
  When set is defined we can write it on output with print command : print A;
