@@ -1,7 +1,7 @@
 # interpreter for functions of real variable and sets
 ## Syntax:
 
- Use **test1, test2 or test3** as a example how it works. 
+ Use **test1, test2 or test3** as an example how it works. 
  
  **Set rules:**   
  
