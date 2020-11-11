@@ -28,9 +28,9 @@
   
   **Guide:**
   
-  After downloading files you need to type makefile in terminal and execute ./interpreter.
+  After downloading files you need to type make in terminal and execute ./interpreter.
   
-  Also, you can execute with: ./interpreter<test1/2/3.
+  Also, you can try with: ./interpreter<test1/2/3.
   
  
  
