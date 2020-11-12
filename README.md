@@ -32,8 +32,11 @@
   
   As well, you can try with: ./interpreter<test1/2/3.
   
+  In test file number 2 (test2) there is a line that is not terminated with ;. In this case, the interpreter will report a syntax error.
+  
+  The test1 and test3 files do not contain syntax errors so the interpreter will execute every command from them.
  
- 
+  
  
  
  
