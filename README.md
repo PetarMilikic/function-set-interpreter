@@ -5,7 +5,7 @@
  
  **Set rules:**   
  
- As an example we can define set with name A and elements 1,2 and 3 with: A={1,2,3};
+ As an example we can define set with name A and elements 1,2 and 3 with: A= {1, 2, 3};
  
  When set is defined we can write it on output with print command : print A;
  
@@ -18,7 +18,7 @@
   
   When function is defined we can write it on output with print command : print f;
   
-  When declaring a function we can use constans(real numbers), symbol x, sin symbol, cos symbol, and symbols like +,-,*,(,).
+  When declaring a function we can use constans (real numbers), symbol x, sin symbol, cos symbol, and symbols like + ,- ,* ,( ,).
   
   
   We can change the value of the declared variable with command like: setName= newValue;  or function functionName= newWalue;
@@ -26,11 +26,11 @@
   Each command is need to be terminated with symbol ;.
   
   
-  **Guide:**
+ ## Guide:
   
   After downloading files you need to type make in terminal and execute ./interpreter.
   
-  Also, you can try with: ./interpreter<test1/2/3.
+  As well, you can try with: ./interpreter<test1/2/3.
   
  
  
