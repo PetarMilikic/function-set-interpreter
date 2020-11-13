@@ -21,6 +21,7 @@
   When declaring a function we can use constans (real numbers), symbol x, sin symbol, cos symbol, and symbols like + ,- ,* ,( ,).
   
   
+  
   We can change the value of the declared variable with command like: setName= newValue;  or function functionName= newWalue;
   
   Each command is need to be terminated with symbol ;.
