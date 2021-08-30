@@ -12,7 +12,6 @@ using namespace std;
 #include "parser.tab.hpp"
 %}
 
-
 %%
 "to" return to__token;
 "print" return print_token;
@@ -27,10 +26,10 @@ using namespace std;
 "card" return card_token;
 "UniversalSet" return universal_token;
 "power_set" return partitive_token;
-[0-9]+([\.][0-9]*)? {yylval.d=atof(yytext); return num_token;}
-[A-Z]+[0-9]* {yylval.s=new string(yytext); return id_token;}
-[a-z]+[0-9]* {yylval.s=new string(yytext); return idfun_token;}
-[+\-*{}:<,;=()~\n\"\[\]] {return *yytext;}
+[0-9]+([\.][0-9]*)? { yylval.d = atof(yytext); return num_token;}
+[A-Z]+[0-9]* { yylval.s = new string(yytext); return id_token;}
+[a-z]+[0-9]* { yylval.s = new string(yytext); return idfun_token;}
+[+\-*{}:<,;=()~\n\"\[\]] { return *yytext;}
 [ \t] { }
 
 .   {
