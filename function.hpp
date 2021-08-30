@@ -9,12 +9,11 @@ class Function{
 public:
    Function(){}
    virtual ~Function(){}
-   virtual double vrednost(double x)const=0;
-   virtual void ispisi(ostream& izlaz)const=0;
-  // virtual Function* klon()const=0;
+   virtual double vrednost(double x)const = 0;
+   virtual void ispisi(ostream& izlaz)const = 0;
 };
 
-class Const:public Function{
+class Const: public Function{
 public:
     Const(double x):_x(x)
     {
@@ -22,16 +21,15 @@ public:
     }
     ~Const(){}
     double vrednost(double x)const;
-    void ispisi(ostream& izlaz)const;
-    
+    void ispisi(ostream& izlaz)const;  
 private:
     double _x;
 };
 
-class BinOP:public Function
+class BinOP: public Function
 {
 public:
-    BinOP(Function* levi,Function* desni):_levi(levi),_desni(desni)
+    BinOP(Function* levi,Function* desni):_levi(levi), _desni(desni)
     {
     }
     ~BinOP();
@@ -40,10 +38,10 @@ protected:
     Function* _desni;
 };
 
-class UnOP:public Function
+class UnOP: public Function
 {
 public:
-    UnOP(Function*unutra):_unutra(unutra)
+    UnOP(Function* unutra): _unutra(unutra)
     {
     }
     ~UnOP();
@@ -51,7 +49,7 @@ protected:
     Function* _unutra;
 };
 
-class IdFun:public Function
+class IdFun: public Function
 {
 public:
     IdFun(){}
@@ -60,27 +58,27 @@ public:
     void ispisi(ostream& izlaz)const;
 };
 
-class Plus:public BinOP
+class Plus: public BinOP
 {
 public:
-    Plus(Function* levi,Function* desni):BinOP(levi,desni)
+    Plus(Function* levi,Function* desni):BinOP(levi, desni)
     {
     }
     double vrednost(double x)const;
     void ispisi(ostream& izlaz)const;
 };
 
-class Minus:public BinOP
+class Minus: public BinOP
 {
 public:
-    Minus(Function* levi,Function* desni):BinOP(levi,desni)
+    Minus(Function* levi,Function* desni):BinOP(levi, desni)
     {
     }
    double vrednost(double x)const;
     void ispisi(ostream& izlaz)const;
 };
 
-class Puta:public BinOP
+class Puta: public BinOP
 {
 public:
     Puta(Function* levi,Function* desni):BinOP(levi,desni)
@@ -90,27 +88,26 @@ public:
     void ispisi(ostream& izlaz)const;
 };
 
-class Sin:public UnOP
+class Sin: public UnOP
 {
 public:
-    Sin(Function* unutra):UnOP(unutra)
+    Sin(Function* unutra): UnOP(unutra)
     {
     }
     double vrednost(double x)const;
     void ispisi(ostream& izlaz)const;
 };
 
-class Cos:public UnOP
+class Cos: public UnOP
 {
 public:
-    Cos(Function* unutra):UnOP(unutra)
+    Cos(Function* unutra): UnOP(unutra)
     {
     }
     double vrednost(double x)const;
     void ispisi(ostream& izlaz)const;
 };
 
-ostream& operator <<(ostream& ostr,const Function& f);
-
+ostream& operator << (ostream& ostr,const Function& f);
 
 #endif
